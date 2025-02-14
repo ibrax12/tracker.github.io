@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestionnaire de dépenses</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #2d3436;
+        line-height: 1.6;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        animation: fadeIn 1s ease-out;
+      }
+
+      h1 {
+        text-align: center;
+        color: #2d3436;
+        margin-bottom: 2rem;
+        font-size: 2.5rem;
+        position: relative;
+        animation: slideDown 0.8s ease-out;
+      }
+
+      h1::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 2px;
+      }
+
+      form {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        background: rgba(248, 249, 250, 0.9);
+        padding: 1.5rem;
+        border-radius: 15px;
+        animation: slideUp 0.8s ease-out;
+      }
+
+      input {
+        padding: 12px 20px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+      }
+
+      input[type='submit'] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      input[type='submit']:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      input[type='submit']:active {
+        transform: translateY(-1px);
+      }
+
+      #resultat {
+        background: white;
+        border-radius: 15px;
+        animation: fadeIn 1s ease-out;
+      }
+
+      #total-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        transform-style: preserve-3d;
+        transition: transform 0.3s ease;
+      }
+
+      #total-container:hover {
+        transform: translateY(-5px) rotateX(5deg);
+      }
+
+      #total-container p {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      #total {
+        font-size: 2.5rem;
+        font-weight: 600;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .depense-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem;
+        margin: 0.8rem 0;
+        background: white;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+        animation: slideIn 0.5s ease-out forwards;
+      }
+
+      .depense-item:hover {
+        transform: translateX(5px) translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-color: #667eea;
+      }
+
+      .depense {
+        color: #2d3436;
+        font-size: 1.1rem;
+      }
+
+      .montant {
+        font-weight: 600;
+        color: #667eea;
+        background: rgba(102, 126, 234, 0.1);
+        padding: 0.6rem 1.2rem;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+      }
+
+      .montant:hover {
+        background: rgba(102, 126, 234, 0.2);
+        transform: scale(1.05);
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        form {
+          grid-template-columns: 1fr;
+        }
+
+        .container {
+          padding: 1rem;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+      }
+      .remove {
+        background: #ff7675;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: bold;
+      }
+
+      .remove:hover {
+        background: #d63031;
+        transform: scale(1.1);
+      }
+
+      .select {
+        padding: 12px 20px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background-color: white;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23667eea' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        padding-right: 2.5rem;
+      }
+
+      .select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .select:hover {
+        border-color: #667eea;
+      }
+
+      @media (max-width: 768px) {
+        .select {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Gestionnaire de dépenses</h1>
+
+      <div id="total-container">
+        <p>Total des dépenses</p>
+        <div id="total">0.00 €</div>
+      </div>
+
+      <form>
+        <label for="cars">Categorie:</label>
+        <select class="select" id="depense">
+          <option value="Alimentation">Alimentation</option>
+          <option value="Transport">Transport</option>
+          <option value="Loisirs">Loisirs</option>
+          <option value="Hygiène">Hygiène</option>
+          <option value="Autres">Autres</option>
+        </select>
+        <input
+          type="number"
+          id="montant"
+          placeholder="Montant"
+          step="0.01"
+          required
+        />
+        <input type="submit" value="Ajouter la dépense" />
+      </form>
+
+      <div id="liste_depenses"></div>
+    </div>
+
+    <script>
+      const depense = document.getElementById('depense');
+      const montant = document.getElementById('montant');
+      const depensebox = document.getElementById('liste_depenses');
+      const total = document.getElementById('total');
+      const form = document.querySelector('form');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const depenseItem = document.createElement('div');
+        depenseItem.classList.add('depense-item');
+
+        const spandepense = document.createElement('span');
+        spandepense.innerHTML = '<i class="fas fa-tag"></i> ' + depense.value;
+        spandepense.classList.add('depense');
+
+        const spanmontant = document.createElement('span');
+        spanmontant.textContent = montant.value + ' €';
+        spanmontant.classList.add('montant');
+
+        const remove = document.createElement('button');
+        remove.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        remove.classList.add('remove');
+
+        remove.addEventListener('click', () => {
+          depenseItem.classList.add(
+            'animate__animated',
+            'animate__fadeOutRight'
+          );
+          setTimeout(() => {
+            depensebox.removeChild(depenseItem);
+            const currentTotal = parseFloat(total.textContent.replace('€', ''));
+            const montantASupprimer = parseFloat(
+              spanmontant.textContent.replace('€', '')
+            );
+            const nouveauTotal = (currentTotal - montantASupprimer).toFixed(2);
+            total.textContent = nouveauTotal + ' €';
+          }, 500);
+        });
+
+        depenseItem.appendChild(spandepense);
+        depenseItem.appendChild(spanmontant);
+        depenseItem.appendChild(remove);
+
+        depensebox.insertBefore(depenseItem, depensebox.firstChild);
+
+        total.textContent =
+          (parseFloat(total.textContent) + parseFloat(montant.value)).toFixed(
+            2
+          ) + ' €';
+
+        montant.value = '';
+      });
+    </script>
+  </body>
+</html>
